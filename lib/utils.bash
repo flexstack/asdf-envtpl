@@ -65,14 +65,14 @@ download_release() {
 			fi
 	fi
 	
-	exe_name=new-dockerfile
+	exe_name=envtpl
 	ext_name=.tar.gz
 	if [[ $target = windows-x86_64 ]]; then
 			exe_name=$exe_name.exe
 			ext_name=.zip
 	fi
 
-	url="$GH_REPO/releases/download/$version/new-dockerfile-$target$ext_name"
+	url="$GH_REPO/releases/download/$version/envtpl-$target$ext_name"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
