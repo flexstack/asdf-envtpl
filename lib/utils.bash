@@ -2,10 +2,10 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for envtpl.
 GH_REPO="https://github.com/flexstack/envtpl"
 TOOL_NAME="envtpl"
 TOOL_TEST="envtpl --version"
+platform=$(uname -ms)
 
 fail() {
 	echo -e "asdf-$TOOL_NAME: $*"
@@ -31,8 +31,6 @@ list_github_tags() {
 }
 
 list_all_versions() {
-	# TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-	# Change this function if envtpl has other means of determining installable versions.
 	list_github_tags
 }
 
@@ -41,8 +39,40 @@ download_release() {
 	version="$1"
 	filename="$2"
 
-	# TODO: Adapt the release URL convention for envtpl
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	case $platform in
+	'Darwin x86_64')
+			target=darwin-x86_64
+			;;
+	'Darwin arm64')
+			target=darwin-arm64
+			;;
+	'Linux aarch64' | 'Linux arm64')
+			target=linux-arm64
+			;;
+	'MINGW64'*)
+			target=windows-x86_64
+			;;
+	'Linux x86_64' | *)
+			target=linux-x86_64
+			;;
+	esac
+
+	if [[ $target = darwin-x86_64 ]]; then
+			# Is this process running in Rosetta?
+			# redirect stderr to devnull to avoid error message when not running in Rosetta
+			if [[ $(sysctl -n sysctl.proc_translated 2>/dev/null) = 1 ]]; then
+					target=darwin-arm64
+			fi
+	fi
+	
+	exe_name=new-dockerfile
+	ext_name=.tar.gz
+	if [[ $target = windows-x86_64 ]]; then
+			exe_name=$exe_name.exe
+			ext_name=.zip
+	fi
+
+	url="$GH_REPO/releases/download/$version/new-dockerfile-$target$ext_name"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -61,7 +91,6 @@ install_version() {
 		mkdir -p "$install_path"
 		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-		# TODO: Assert envtpl executable exists.
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
 		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
