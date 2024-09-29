@@ -40,35 +40,35 @@ download_release() {
 
 	case $platform in
 	'Darwin x86_64')
-			target=darwin-x86_64
-			;;
+		target=darwin-x86_64
+		;;
 	'Darwin arm64')
-			target=darwin-arm64
-			;;
+		target=darwin-arm64
+		;;
 	'Linux aarch64' | 'Linux arm64')
-			target=linux-arm64
-			;;
+		target=linux-arm64
+		;;
 	'MINGW64'*)
-			target=windows-x86_64
-			;;
+		target=windows-x86_64
+		;;
 	'Linux x86_64' | *)
-			target=linux-x86_64
-			;;
+		target=linux-x86_64
+		;;
 	esac
 
 	if [[ $target = darwin-x86_64 ]]; then
-			# Is this process running in Rosetta?
-			# redirect stderr to devnull to avoid error message when not running in Rosetta
-			if [[ $(sysctl -n sysctl.proc_translated 2>/dev/null) = 1 ]]; then
-					target=darwin-arm64
-			fi
+		# Is this process running in Rosetta?
+		# redirect stderr to devnull to avoid error message when not running in Rosetta
+		if [[ $(sysctl -n sysctl.proc_translated 2>/dev/null) = 1 ]]; then
+			target=darwin-arm64
+		fi
 	fi
 	
 	exe_name=envtpl
 	ext_name=.tar.gz
 	if [[ $target = windows-x86_64 ]]; then
-			exe_name=$exe_name.exe
-			ext_name=.zip
+		exe_name=$exe_name.exe
+		ext_name=.zip
 	fi
 
 	url="$GH_REPO/releases/download/v$version/envtpl-$target$ext_name"
