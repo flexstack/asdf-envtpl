@@ -22,7 +22,14 @@ release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION$ext_name"
 download_release "$ASDF_INSTALL_VERSION" "$release_file"
 
 #  Extract contents of tar.gz file into the download directory
-tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+if [[ $ext_name -eq ".zip" ]]; then
+  unzip -o "$release_file" -d "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
+  # Strip the first directory from the zip file
+  mv "$ASDF_DOWNLOAD_PATH/$(ls -d $ASDF_DOWNLOAD_PATH/*)"/* "$ASDF_DOWNLOAD_PATH"
+else
+  echo "Extracting: tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1"
+  tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+fi
 
 # Remove the tar.gz file since we don't need to keep it
 rm "$release_file"
