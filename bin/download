@@ -13,8 +13,8 @@ mkdir -p "$ASDF_DOWNLOAD_PATH"
 ext_name=".tar.gz"
 case $platform in
 'MINGW64'*)
-		ext_name=".zip"
-		;;
+	ext_name=".zip"
+	;;
 esac
 
 release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION$ext_name"
@@ -23,9 +23,9 @@ download_release "$ASDF_INSTALL_VERSION" "$release_file"
 
 #  Extract contents of tar.gz file into the download directory
 if [[ $ext_name == ".zip" ]]; then
-  unzip -o "$release_file" -d "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
+    unzip -o "$release_file" -d "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
 else
-  tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
+    tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
 fi
 
 # Remove the tar.gz file since we don't need to keep it
