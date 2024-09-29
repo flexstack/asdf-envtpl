@@ -27,7 +27,7 @@ if [[ $ext_name == ".zip" ]]; then
   # Strip the first directory from the zip file
   mv "$ASDF_DOWNLOAD_PATH/$(ls -d $ASDF_DOWNLOAD_PATH/*)"/* "$ASDF_DOWNLOAD_PATH"
 else
-  tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+  tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
 fi
 
 # Remove the tar.gz file since we don't need to keep it
