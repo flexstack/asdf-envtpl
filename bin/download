@@ -24,8 +24,6 @@ download_release "$ASDF_INSTALL_VERSION" "$release_file"
 #  Extract contents of tar.gz file into the download directory
 if [[ $ext_name == ".zip" ]]; then
   unzip -o "$release_file" -d "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
-  # Strip the first directory from the zip file
-  mv "$ASDF_DOWNLOAD_PATH/$(ls -d $ASDF_DOWNLOAD_PATH/*)"/* "$ASDF_DOWNLOAD_PATH"
 else
   tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
 fi

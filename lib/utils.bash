@@ -75,8 +75,6 @@ download_release() {
 	url="$GH_REPO/releases/download/v$version/envtpl-$target$ext_name"
 
 	echo "* Downloading $TOOL_NAME release $version..."
-	echo "  $url"
-	echo "  $filename"
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
@@ -94,8 +92,6 @@ install_version() {
 		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
 		tool_cmd=envtpl
-		# Test that file exists at path
-		ls -l "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to exist."
 		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
 
 		echo "$TOOL_NAME $version installation was successful!"
