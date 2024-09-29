@@ -4,7 +4,6 @@ set -euo pipefail
 
 GH_REPO="https://github.com/flexstack/envtpl"
 TOOL_NAME="envtpl"
-TOOL_TEST="envtpl --version"
 platform=$(uname -ms)
 
 fail() {
