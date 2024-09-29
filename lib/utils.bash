@@ -75,6 +75,8 @@ download_release() {
 	url="$GH_REPO/releases/download/v$version/envtpl-$target$ext_name"
 
 	echo "* Downloading $TOOL_NAME release $version..."
+	echo "  $url"
+	echo "  $filename"
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
